@@ -333,22 +333,10 @@ public class GTRecipeConstants {
         if (!foundAnyItem) return ret;
 
         boolean recycle = builder.getMetadataOrDefault(RECYCLE, false);
-        int baseGasAmount = builder.getMetadataOrDefault(ADDITIVE_AMOUNT, 10);
         int baseDuration = builder.getDuration();
 
         if (recycle) {
             builder.recipeCategory(RecipeCategories.arcFurnaceRecycling);
-        }
-
-        // Generate recipe with gas
-        for (BlastFurnaceGasStat gasStat : BlastFurnaceGasStat.BlastFurnaceGasStats) {
-            int gasAmount = (int) (gasStat.recipeConsumedAmountMultiplier * baseGasAmount);
-            ret.addAll(
-                builder.copy()
-                    .duration((int) Math.max(1, baseDuration * gasStat.recipeTimeMultiplier))
-                    .fluidInputs(GTUtility.copyAmount(gasAmount, gasStat.gas))
-                    .circuit(11)
-                    .addTo(RecipeMaps.arcFurnaceRecipes));
         }
 
         if (!recycle) {
